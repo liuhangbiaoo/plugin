@@ -17,3 +17,8 @@ ImageResizer/  ImageResizer图片自动裁剪
 other/   其他单页或单列
     /js鼠标移动方向.html   获取鼠标进入区域的方向
     头条api测试.html   通过ajax  jsonp或yui 跨域请求
+
+autodate/  根据开始结束日期生成中间日期
+    /根据开始日期结束日期.html   （例如：var h=d("2015-1-21","2016-12-12");console.log(h)）
+
+vicode/   js生成验证码（中文或英文数字）
