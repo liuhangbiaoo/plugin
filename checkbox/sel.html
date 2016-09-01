@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>洗澡器</title>
+</head>
+
+<body>
+    <ul id="list">
+        <li>
+            <label>
+                <input type="checkbox" value="1">教程指导</label>
+        </li>
+        <li>
+            <label>
+                <input type="checkbox" value="2">编程之美</label>
+        </li>
+        <li>
+            <label>
+                <input type="checkbox" value="3">技术经验</label>
+        </li>
+        <li>
+            <label>
+                <input type="checkbox" value="4">生活百科</label>
+        </li>
+        <li>
+            <label>
+                <input type="checkbox" value="5">思想精髓</label>
+        </li>
+        <li>
+            <label>
+                <input type="checkbox" value="6">国学精粹</label>
+        </li>
+        <li>
+            <label>
+                <input type="checkbox" value="7">新闻频道</label>
+        </li>
+        <li>
+            <label>
+                <input type="checkbox" value="8">电视直播</label>
+        </li>
+        <li>
+            <label>
+                <input type="checkbox" value="9">百变视界</label>
+        </li>
+        <li>
+            <label>
+                <input type="checkbox" value="10">心灵净化</label>
+        </li>
+    </ul>
+    <input type="checkbox" value="交换选择" class="btn" id="changeSel">
+    <input type="button" value="全选" class="btn" id="selectAll">
+    <input type="button" value="全不选" class="btn" id="unSelect">
+    <input type="button" value="反选" class="btn" id="reverse">
+    <input type="button" value="随机" class="btn" id="randomSel">
+    <input type="button" value="获得选中的所有值" class="btn" id="getValue">
+    <script src="../../workspace/shujushuo/js/jquery-1.11.1.min.js"></script>
+    <script>
+    $(function() {
+        checkbox.changeSel("#changeSel", "#list");
+        checkbox.selAll("#selectAll", "#list");
+        checkbox.rmSelAll("#unSelect", "#list");
+        checkbox.reSelAll("#reverse", "#list");
+        checkbox.randomSel("#randomSel", "#list", 3);
+        checkbox.getSelAll("#getValue", "#list", function(ids) {
+            alert(ids);
+        });
+    })
+    var checkbox = {
+        selAll: function(btn, checkbox) {
+            $(btn).on('click', function(event) {
+                event.preventDefault();
+                $(checkbox).find('input[type="checkbox"]').prop('checked', true);
+            })
+        },
+        rmSelAll: function(btn, checkbox) {
+            $(btn).on('click', function(event) {
+                event.preventDefault();
+                $(checkbox).find('input[type="checkbox"]').prop('checked', false);
+            })
+        },
+        reSelAll: function(btn, checkbox) {
+            $(btn).on('click', function(event) {
+                event.preventDefault();
+                $(checkbox).find("input[type='checkbox']").each(function() {
+                    $(this).prop('checked', !$(this).prop('checked'));
+                });
+            })
+        },
+        getSelAll: function(btn, checkbox, fn) {
+            $(btn).on('click', function(event) {
+                event.preventDefault();
+                var ids = [];
+                $(checkbox).find("input[type='checkbox']:checked").each(function() {
+                    ids.push($(this).val());
+                });
+                return fn(ids);
+            })
+        },
+        randomSel: function(btn, checkbox, num) {
+            $(btn).on('click', function(event) {
+                event.preventDefault();
+                $(checkbox).find('input[type="checkbox"]').prop('checked', false);
+                var ck = $(checkbox).find("input[type='checkbox']");
+                // $(ck[Math.floor(Math.random() * ck.length)]).prop('checked', true);//随机选择一个
+                var num_arr = (num) ? (new Array(num)) : (new Array(3));
+                $.each(num_arr, function(index, val) {
+                    num_arr[index] = Math.ceil(Math.floor(Math.random() * ck.length));
+                    $(ck[num_arr[index]]).prop('checked', true);
+                });
+            })
+        },
+        changeSel:function(btn, checkbox){
+        	$(btn).change(function () {
+        	 $(checkbox).find("input[type='checkbox']").prop('checked',$(btn).prop('checked'));
+        	})
+        }
+
+    }
+    </script>
+</body>
+
+</html>
