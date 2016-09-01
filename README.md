@@ -1,5 +1,5 @@
 # plugin ok
-jquery插件收集整理库
+常用插件或代码收集整理库
 
 canvas/ canvas效果目录
     banner.html （动态banner）
