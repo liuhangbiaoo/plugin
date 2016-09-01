@@ -10,3 +10,10 @@ checkbox/  checkbox选择操作
 
 docdir/   自动生成帮助文档
     /docdir/index.html 自动提取doc文档里面的标题到dir目录（根据标签规范生成2~3及导航）
+
+ImageResizer/  ImageResizer图片自动裁剪
+    /index.html 自动判断图片 生成合适的裁剪方案（如高度全部展示 且图片居中）
+
+other/   其他单页或单列
+    /js鼠标移动方向.html   获取鼠标进入区域的方向
+    头条api测试.html   通过ajax  jsonp或yui 跨域请求

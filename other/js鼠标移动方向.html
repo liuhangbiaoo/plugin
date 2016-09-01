@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>鼠标移动方向</title>
+	<style>
+	#qb{
+		position: relative;
+		width: 500px;
+		height: 200px;
+		margin: 0 auto;
+		background: #f09;
+	}
+	</style>
+</head>
+<body>
+<div id="qb">
+	xzczx
+</div>
+	<script>
+
+
+var gaga = function(wrap){
+        var wrap = document.getElementById(wrap);
+        var hoverDir = function(e){
+            var w = wrap.offsetWidth,
+                h = wrap.offsetHeight,
+                x = ( e.clientX - wrap.offsetLeft - ( w / 2 ) ) * ( w > h ? ( h / w ) : 1 ),
+                y = (e.clientY - wrap.offsetTop - (h / 2)) * (h > w ? (w / h) : 1),
+                // 上(0) 右(1) 下(2) 左(3)
+                direction = Math.round( ( ( ( Math.atan2( y, x ) * ( 180 / Math.PI ) ) + 180 ) / 90) + 3 ) % 4,
+                eventType = e.type,
+                dirName = new Array('上方','右侧','下方','左侧');
+            if( e.type == 'mouseover' || e.type == 'mouseenter' ){
+                wrap.innerHTML = dirName[direction] + '进入';
+            }else{
+                wrap.innerHTML = dirName[direction] + '离开';
+            }
+        }
+        if( window.addEventListener ){
+            wrap.addEventListener( 'mouseover',hoverDir,false );
+            wrap.addEventListener( 'mouseout',hoverDir,false );
+        }else if( window.attachEvent ){
+            wrap.attachEvent( 'onmouseenter',hoverDir );
+            wrap.attachEvent( 'onmouseleave',hoverDir );
+        }
+    }
+
+    gaga("qb")
+	</script>
+
+
+
+	<script>
+	/**
+	 * [funcUrl description]
+	 * @param  {[type]} name  [获取值]
+	 * @param  {[type]} value [设置值 返回url]
+	 * @param  {[type]} type  [设置多个值 返回url]
+	 * @return {[type]}       [description]
+	 */
+		function funcUrl(name,value,type){
+		    var loca = window.location;
+		    var baseUrl = type==undefined ? loca.origin + loca.pathname + "?" : "";
+		    var query = loca.search.substr(1);
+		    // 如果没有传参,就返回 search 值 不包含问号
+		    if (name==undefined) { return query }
+		    // 如果没有传值,就返回要查询的参数的值
+		    if (value==undefined){
+		        var val = query.match(new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"));
+		        return val!=null ? unescape(val[2]) : null;
+		    };
+		    var url;
+		    if (query=="") {
+		        // 如果没有 search 值,则返回追加了参数的 url
+		        url = baseUrl + name + "=" + value;
+		    }else{
+		        // 如果没有 search 值,则在其中修改对应的值,并且去重,最后返回 url
+		        var obj = {};
+		        var arr = query.split("&");
+		        for (var i = 0; i < arr.length; i++) {
+		            arr[i] = arr[i].split("=");
+		            obj[arr[i][0]] = arr[i][1];
+		        };
+		        obj[name] = value;
+		        url = baseUrl + JSON.stringify(obj).replace(/[\"\{\}]/g,"").replace(/\:/g,"=").replace(/\,/g,"&");
+		    };
+		    return url;
+		}
+		// alert(funcUrl("name","张先生"))
+
+
+		(function(w){
+        var DQuery=function(){
+            return new DQuery.prototype.init();
+        }
+        DQuery.prototype ={
+            //定义一些静态变量
+            'self':this,
+            'name':'DQuery',
+            'version':'2016-06-05',
+            // 构造函数方法
+            'init':function(){
+                //定义一些变量属性
+            },
+            //定义一些方法
+            'setAlias':function(alias){
+                this.alias=alias;
+                return this;
+            }           
+        }
+        DQuery.prototype.init.prototype=DQuery.prototype;
+        window.DQuery=$$=DQuery; //让外边可以调用
+    }(window));
+	</script>
+</body>
+</html>
+

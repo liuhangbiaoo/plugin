@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ImageResizer-图片裁剪</title>
+    <style>
+    	*{
+    		padding: 0;
+    		margin: 0;
+    	}
+		li{
+			position: relative;
+			list-style: none;
+			width: 320px;
+			height: 250px;
+			float: left;
+			margin: 15px;
+
+		}
+		div{
+			width: 200px;
+			height: 380px;
+			float: left;
+			margin: 15px;
+		}
+		li a{
+			display: block;
+		}
+    </style>
+</head>
+
+<body>
+    <ul>
+        <li><img src="images/pic2.jpg" alt=""></li>
+        <li>
+            <a href="/"><img src="images/pic1.jpg" alt=""></a>
+        </li>
+        <li><img src="images/pic3.jpg" alt=""></li>
+        <li><img src="images/pic5.jpg" alt=""></li>
+        <li><img src="images/pic4.jpg" alt=""></li>
+        <li><img src="images/pic6.jpg" alt=""></li>
+    </ul>
+        <div><img src="images/pic3.jpg" alt=""></div>
+        <div><img src="images/pic2.jpg" alt=""></div>
+        <div><img src="images/pic1.jpg" alt=""></div>
+        <div><img src="images/pic4.jpg" alt=""></div>
+        <div><img src="images/pic6.jpg" alt=""></div>
+        <div><img src="images/pic5.jpg" alt=""></div>
+
+    <script src="../../workspace/datashuo/js/jquery-1.11.1.min.js"></script>
+    <script>
+    $(function(){
+    	/**
+    	 * [ImageResizer 图片自动裁剪]
+    	 * @param {[type]} obj [传入图片被包含的对象]
+    	 */
+    	function ImageResizer(obj){
+    		var obj=$(obj);
+    		obj.each(function(i, e) { 
+    			var o=$(this); 			
+	    		var iw=o.innerWidth(),ih=o.innerHeight();
+	    		o.css('overflow','hidden');   
+	    		var img=o.find('img'),imgW=img.innerWidth(),imgH=img.innerHeight();	
+	    		 if((iw/ih)>(imgW/imgH)){
+	    		 	img.width(iw);
+	    		 	img.css({"margin-top":(ih-img.innerHeight())/2+"px"});
+	    		 }else{
+	    		 	img.height(ih);
+	    		 	img.css({"margin-left":(iw-img.innerWidth())/2+"px"});
+	    		 }
+    		});
+    	}
+
+    	ImageResizer('li,div');
+    	// ImageResizer('div');
+    })
+    </script>
+</body>
+
+</html>

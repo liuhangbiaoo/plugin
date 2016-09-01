@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>toutiao.com 测试</title>
+    <script src="http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"></script>
+    <script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+    <style>
+        body {
+            background: #f5f5f5;
+        }
+        
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        .box {
+            width: 960px;
+            margin: 15px auto;
+            background: #fff;
+            padding: 50px;
+        }
+        
+        .box dt {
+            border-bottom: 3px solid #000;
+            height: 50px;
+            line-height: 50px;
+            font-size: 24px;
+            color: #333;
+        }
+        
+        .box dd,
+        .box li {
+            padding: 30px 15px;
+            list-style: none;
+        }
+        
+        .box dd a,
+        .box li a {
+            display: block;
+            color: #444;
+            line-height: 40px;
+            font-family: "微软雅黑";
+            text-decoration: none;
+            -webkit-transition: all 0.5s linear;
+            -moz-transition: all 0.5s linear;
+            -o-transition: all 0.5s linear;
+            -ms-transition: all 0.5s linear;
+            transition: all 0.5s linear;
+        }
+        
+        .box dd a:hover,
+        .box li a:hover {
+            padding-left: 3px;
+            opacity: .8;
+            filter: alpha(opacity=80);
+        }
+        
+        .datetime {
+            float: right;
+            font-weight: normal;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <ul class="video">
+            <dt>全部视频</dt>
+            <li></li>
+        </ul>
+        <ul class="olympic">
+            <dt></dt>
+            <li></li>
+        </ul>
+    </div>
+    <div id="qq"></div>
+    <!-- http://query.yahooapis.com/v1/test/console.html -->
+    <script>
+        // 视频看天下
+        // var videoVista="http://toutiao.com/api/article/recent/?source=2&category=subv_society&as=A175770B766C217&cp=57B66CF231377E1";
+        //视频全部
+        // var videoAll='select * from json where url="http://toutiao.com/api/article/recent/?source=2&category=video&as=A1A5972B466C949&cp=57B63C99D409BE1"';
+        //  YUI().use('yql', function(Y) {
+        //     var q = Y.YQL(videoAll, function(r) {
+        //         var aaData = r.query.results.json;
+        //         var data = aaData.data;
+        //         var title = "";
+        //         // $("ul dt").html(aaData.title);
+        //         $.each(data, function(i) {
+        //                 if (data[i].title && data[i].datetime) {
+        //                     title += '<a href="' + data[i].display_url + '"><strong class="datetime">' + data[i].datetime + '</strong>' + data[i].title + '</a>';
+        //                 }
+        //         });
+        //         $("ul li").html(title);
+        //     });
+        //     q.send();
+
+        // });
+
+
+        //奥运快讯
+        // var olympic = 'select * from json where url="http://toutiao.com/api/article/olympic/?format=json"';
+        // YUI().use('yql', function(Y) {
+        //     var q = Y.YQL(olympic, function(r) {
+        //         var aaData = r.query.results.json;
+        //         var data = aaData.data;
+        //         var title = "";
+        //         $("dl dt").html(aaData.title);
+        //         $.each(data, function(i) {
+        //             $.each(data[i], function(j) {
+        //                 if (data[i][j].title && data[i][j].datetime) {
+        //                     title += '<a href="' + data[i][j].display_url + '"><strong class="datetime">' + data[i][j].datetime + '</strong>' + data[i][j].title + '</a>';
+        //                 }
+        //             });
+        //         });
+        //         $("dl dd").html(title);
+        //     });
+        //     q.send();
+
+        // });
+        queryAjax('http://toutiao.com/api/article/olympic/?format=json', function(data) {
+            $(".olympic dt").html(data.title);
+            var title = "";
+            var data = data.data;
+            $.each(data, function(i) {
+                $.each(data[i], function(j) {
+                    if (data[i][j].title && data[i][j].datetime) {
+                        var text = "";
+                        title += '<a href="' + data[i][j].display_url + '" target="_blank"><strong class="datetime">' + data[i][j].datetime + '</strong>' + data[i][j].title + '</a>';
+                    }
+                });
+            });
+            $(".olympic li").html(title);
+        });
+
+
+
+        var videoAll = 'select * from html where url="http://toutiao.com/a6321593163186487554/" and xpath="//div[@class=\'title\']"';
+        YUI().use('yql', function(Y) {
+            var q = Y.YQL(videoAll, function(r) {
+                console.log(r)
+                console.log(r.query.results.body)
+            });
+            q.send();
+
+        });
+
+
+
+        queryAjax('http://toutiao.com/api/article/recent/?source=2&category=video&as=A1A5972B466C949&cp=57B63C99D409BE1', function(data) {
+            var data = data.data;
+            var title = "";
+            $.each(data, function(i) {
+                if (data[i].title && data[i].datetime) {
+                    title += '<a href="' + data[i].display_url + '"><strong class="datetime">' + data[i].datetime + '</strong>' + data[i].title + '</a>';
+                }
+            });
+            $(".video li").html(title);
+        });
+
+
+
+
+
+
+        /**
+         * [queryAjax 跨域Ajax请求]
+         * @param  {[type]}   url [请求url路径]
+         * @param  {Function} fn  [返回数据]
+         * @return {[type]}       [description]
+         */
+        function queryAjax(url, fn) {
+            $.ajax({
+                type: "get",
+                data: "random=" + Math.random(),
+                url: url,
+                dataType: "jsonp",
+                jsonp: "callback",
+                success: function(data) {
+                    return fn(data)
+                }
+            });
+        }
+    </script>
+
+    <script>
+        ;
+        (function() {
+            var formatParams = function(data) { //格式化参数
+                var arr = [];
+                for (var name in data) {
+                    arr.push(encodeURIComponent(name) + '=' + encodeURIComponent(data[name]));
+                }
+                return arr.join('&');
+            }
+            var jsonp = function(options) {
+                options = options || {};
+                if (!options.url || !options.callback) {
+                    throw new Error("参数不合法");
+                }
+
+                //创建 script 标签并加入到页面中
+                var callbackName = ('jsonp_' + Math.random()).replace(".", "");
+                var oHead = document.getElementsByTagName('head')[0];
+                var params = "";
+                if (options.data) {
+                    options.data[options.callback] = callbackName;
+                    params += formatParams(options.data);
+                } else {
+                    params += options.callback + "=" + callbackName;
+                }
+                var oS = document.createElement('script');
+                oHead.appendChild(oS);
+
+                //创建jsonp回调函数
+                window[callbackName] = function(json) {
+                    oHead.removeChild(oS);
+                    clearTimeout(oS.timer);
+                    window[callbackName] = null;
+                    options.success && options.success(json);
+                };
+
+                //发送请求
+                oS.src = options.url + '?' + params;
+
+                //超时处理
+                if (options.time) {
+                    oS.timer = setTimeout(function() {
+                        window[callbackName] = null;
+                        oHead.removeChild(oS);
+                        options.fail && options.fail({
+                            message: "超时"
+                        });
+                    }, options.time);
+                }
+            };
+            window.jsonp = jsonp;
+        })();
+        //调用方法
+        // jsonp({
+        //     url:"https://www.baidu.com",
+        //     callback:"callback",   //跟后台协商的接收回调名
+        //     data:{id:"1000120"},
+        //     success:function(json){
+        //         console.log(json)
+        //     },
+        //     fail:function(){
+        //         alert("fail");
+        //     },
+        //     time:10000
+        // })
+
+        // jsonp({
+        //     url:"https://www.baidu.com",
+        //     callback:"callback",   //跟后台协商的接收回调名
+        //     data:{id:"1000120"},
+        //     success:function(json){
+        //         console.log(json)
+        //     },
+        //     fail:function(){
+        //         alert("fail");
+        //     },
+        //     time:10000
+        // })
+    </script>
+</body>
+
+</html>
